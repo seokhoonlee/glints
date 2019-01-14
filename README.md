@@ -22,9 +22,7 @@ java XuTheGreat
 
 4 of the variables on top of the files can be changed.
 
-int CHANGE_YEAR = 1929; // year that changed from Julian to Gregorian
-int CHINESE_SICKLE_DAY_NUMBER = 244; // can be changed but it will break if more than 365 - 15 (for change year)
-int MIN_YEAR = 1600; // min year to guess
-int MAX_YEAR = 2600; // max year to guess
-
-
+int CHANGE_YEAR = 1929; // year that changed from Julian to Gregorian                             
+int CHINESE_SICKLE_DAY_NUMBER = 244; // can be changed but it will break if more than 365 - 15 (for change year)          
+int MIN_YEAR = 1600; // min year to guess                                              
+int MAX_YEAR = 2600; // max year to guess                                              
