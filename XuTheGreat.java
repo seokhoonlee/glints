@@ -1,59 +1,8 @@
 import java.util.*;
 
 public class XuTheGreat {
-  public void guessChineseSickleDay(int pompousYear) {
-    Date chineseSickleDay;
-
-    if (pompousYear == 1929) {
-      chineseSickleDay = new Date(pompousYear, 8, 25);
-      System.out.println(chineseSickleDay.toString());
-      return;
-    }
-
-    boolean isGregorian = true;
-
-    if (pompousYear < 1929) {
-      isGregorian = false;
-    } else {
-      isGregorian = true;
-    }
-
-    boolean isLeapYear = this.getIsLeapYear(pompousYear, isGregorian);
-
-    if (isLeapYear) {
-      chineseSickleDay = new Date(pompousYear, 8, 11);
-    } else { // isNotLeapYear
-      chineseSickleDay = new Date(pompousYear, 8, 12);
-    }
-
-    System.out.println(chineseSickleDay.toString());
-  }
-
-  public static void main(String[] args) {
-    Scanner sc = new Scanner(System.in);
-
-    int pompousYear = sc.nextInt();
-
-    XuTheGreat xu = new XuTheGreat();
-
-    xu.guessChineseSickleDay(pompousYear);
-  }
-
-  public boolean getIsLeapYear(int year, boolean isGregorian) {
-    if (isGregorian) {
-      if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) {
-        return true;
-      } else {
-        return false;
-      }
-    } else { // isJulian
-      if (year % 4 == 0) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
+  int CHANGE_YEAR = 1929; // year that changed from Julian to Gregorian
+  int CHINESE_SICKLE_DAY_NUMBER = 244; // can be changed but it will break if more than 365 - 15 (for change year)
 
   public class Date {
     int year;
@@ -64,6 +13,14 @@ public class XuTheGreat {
       this.year = year;
       this.month = month;
       this.day = day;
+
+      if (month > 12 || month < 1) {
+        System.out.println("MONTH OUT OF RANGE");
+      }
+
+      if (day > 31 || day < 1) {
+        System.out.println("DAY OUT OF RANGE");
+      }
     }
 
     private String printDay(int day) {
@@ -80,7 +37,8 @@ public class XuTheGreat {
       } else if (11 <= day && day <= 20) {
         return day + "th";
       } else {
-        return "DAY NOT IN RANGE";
+        System.out.println("DAY OUT OF RANGE");
+        return "DAY OUT OF RANGE";
       }
     }
 
@@ -111,7 +69,8 @@ public class XuTheGreat {
         case 12:
           return "December";
         default:
-          return "MONTH NOT IN RANGE";
+          System.out.println("MONTH OUT OF RANGE");
+          return "MONTH OUT OF RANGE";
       }
     }
 
@@ -121,11 +80,102 @@ public class XuTheGreat {
     }
   }
 
-  public class Year {
-    private int[] numDaysPerMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+  public interface DayCalculator {
+    public int getDaysInMonth(int month);
   }
 
-  public class LeapYear {
+  public class NormalYearDayCalculator implements DayCalculator {
+    private int[] numDaysPerMonth = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    public int getDaysInMonth(int month) {
+      return numDaysPerMonth[month - 1];
+    }
+  }
+
+  public class LeapYearDayCalculator implements DayCalculator {
     private int[] numDaysPerMonth = {31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    public int getDaysInMonth(int month) {
+      return numDaysPerMonth[month - 1];
+    }
+  }
+
+  public class ChangeYearDayCalculator implements DayCalculator {
+    private int[] numDaysPerMonth = {31, 15, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    public int getDaysInMonth(int month) {
+      return numDaysPerMonth[month - 1];
+    }
+  }
+
+  public void guessChineseSickleDay(int pompousYear) {
+    Date chineseSickleDay = this.getChineseSickleDay(pompousYear);
+
+    System.out.println(chineseSickleDay.toString());
+  }
+
+  public Date getChineseSickleDay(int year) {
+    DayCalculator calculator = this.getDayCalculator(year);
+
+    int remainingDays = this.CHINESE_SICKLE_DAY_NUMBER;
+
+    int month = 1;
+
+    while (calculator.getDaysInMonth(month) < remainingDays) {
+      remainingDays -= calculator.getDaysInMonth(month);
+      month++;
+    }
+
+    int day = remainingDays;
+
+    return new Date(year, month, day);
+  }
+
+  public DayCalculator getDayCalculator(int year) {
+    if (year == CHANGE_YEAR) {
+      return new ChangeYearDayCalculator();
+    }
+
+    boolean isGregorian = true;
+
+    if (year < CHANGE_YEAR) {
+      isGregorian = false;
+    } else {
+      isGregorian = true;
+    }
+
+    boolean isLeapYear = this.getIsLeapYear(year, isGregorian);
+
+    if (isLeapYear) {
+      return new LeapYearDayCalculator();
+    } else { // isNotLeapYear
+      return new NormalYearDayCalculator();
+    }
+  }
+
+  public boolean getIsLeapYear(int year, boolean isGregorian) {
+    if (isGregorian) {
+      if (((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else { // isJulian
+      if (year % 4 == 0) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  public static void main(String[] args) {
+    Scanner sc = new Scanner(System.in);
+
+    int pompousYear = sc.nextInt();
+
+    XuTheGreat xu = new XuTheGreat();
+
+    xu.guessChineseSickleDay(pompousYear);
   }
 }
