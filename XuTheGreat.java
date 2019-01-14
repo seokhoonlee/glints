@@ -3,6 +3,8 @@ import java.util.*;
 public class XuTheGreat {
   int CHANGE_YEAR = 1929; // year that changed from Julian to Gregorian
   int CHINESE_SICKLE_DAY_NUMBER = 244; // can be changed but it will break if more than 365 - 15 (for change year)
+  int MIN_YEAR = 1600;
+  int MAX_YEAR = 2600;
 
   public class Date {
     int year;
@@ -13,6 +15,10 @@ public class XuTheGreat {
       this.year = year;
       this.month = month;
       this.day = day;
+
+      if (year > MAX_YEAR || year < MIN_YEAR) {
+        System.out.println("YEAR OUT OF RANGE");
+      }
 
       if (month > 12 || month < 1) {
         System.out.println("MONTH OUT OF RANGE");
@@ -108,13 +114,17 @@ public class XuTheGreat {
     }
   }
 
-  public void guessChineseSickleDay(int pompousYear) {
+  public String guessChineseSickleDay(int pompousYear) {
     Date chineseSickleDay = this.getChineseSickleDay(pompousYear);
 
-    System.out.println(chineseSickleDay.toString());
+    return chineseSickleDay.toString();
   }
 
   public Date getChineseSickleDay(int year) {
+    if (year > MAX_YEAR || year < MIN_YEAR) {
+      System.out.println("YEAR OUT OF RANGE");
+    }
+
     DayCalculator calculator = this.getDayCalculator(year);
 
     int remainingDays = this.CHINESE_SICKLE_DAY_NUMBER;
@@ -127,6 +137,16 @@ public class XuTheGreat {
     }
 
     int day = remainingDays;
+
+    // if the year is change year and it falls on February, there is no 1st - 13th February
+    if (year == CHANGE_YEAR && month == 2) {
+      day += 13;
+
+      if (day > 28) {
+        day -= 28;
+        month++;
+      }
+    } 
 
     return new Date(year, month, day);
   }
@@ -176,6 +196,8 @@ public class XuTheGreat {
 
     XuTheGreat xu = new XuTheGreat();
 
-    xu.guessChineseSickleDay(pompousYear);
+    String guess = xu.guessChineseSickleDay(pompousYear);
+
+    System.out.println(guess);
   }
 }
