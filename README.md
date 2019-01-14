@@ -12,8 +12,8 @@ JAN 15, 2019, 01:25 AM
 
 On command line:
 
-javac XuTheGreat.java
-java XuTheGreat
+javac XuTheGreat.java                                             
+java XuTheGreat                                             
 0000
 
 0000 can be any year from 1600 to 2600.
