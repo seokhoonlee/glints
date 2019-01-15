@@ -26,36 +26,12 @@ public class ClusterCounter {
   public void removeConnectedCluster(int[][] flatDiagram, int i, int j) {
     flatDiagram[i][j] = 0;
 
-    if (flatDiagram[i - 1][j - 1] == 1) {
-      removeConnectedCluster(flatDiagram, i - 1, j - 1);
-    }
-
-    if (flatDiagram[i - 1][j + 0] == 1) {
-      removeConnectedCluster(flatDiagram, i - 1, j + 0);
-    }
-
-    if (flatDiagram[i - 1][j + 1] == 1) {
-      removeConnectedCluster(flatDiagram, i - 1, j + 1);
-    }
-
-    if (flatDiagram[i + 0][j - 1] == 1) {
-      removeConnectedCluster(flatDiagram, i + 0, j - 1);
-    }
-
-    if (flatDiagram[i + 0][j + 1] == 1) {
-      removeConnectedCluster(flatDiagram, i + 0, j + 1);
-    }
-
-    if (flatDiagram[i + 1][j - 1] == 1) {
-      removeConnectedCluster(flatDiagram, i + 1, j - 1);
-    }
-
-    if (flatDiagram[i + 1][j + 0] == 1) {
-      removeConnectedCluster(flatDiagram, i + 1, j + 0);
-    }
-
-    if (flatDiagram[i + 1][j + 1] == 1) {
-      removeConnectedCluster(flatDiagram, i + 1, j + 1);
+    for (int k = -1; k <= 1; k++) {
+      for (int l = - 1; l <= 1; l++) {
+        if (flatDiagram[i + k][j + l] == 1) {
+          removeConnectedCluster(flatDiagram, i + k, j + l);
+        }
+      }
     }
   }
 
