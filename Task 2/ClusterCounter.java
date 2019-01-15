@@ -6,13 +6,6 @@ public class ClusterCounter {
 
     for (int i = 0; i < row; i++) {
       for (int j = 0; j < col; j++) {
-        System.out.print(flatDiagram[i][j]);
-      }
-      System.out.println();
-    }
-
-    for (int i = 0; i < row; i++) {
-      for (int j = 0; j < col; j++) {
         if (flatDiagram[i][j] == 1) {
           count++;
           removeConnectedCluster(flatDiagram, i, j);
@@ -35,10 +28,15 @@ public class ClusterCounter {
     }
   }
 
-  public static void main(String[] args) {
+  public List<String> readInputLines() {
+    List<String> inputLines = new ArrayList<>();
+
     Scanner sc = new Scanner(System.in);
 
-    List<String> inputLines = new ArrayList<>();
+    if (!sc.hasNextLine()) {
+      System.out.println("NO INPUT LINE");
+      return inputLines;
+    }
     
     while (sc.hasNextLine()) {
         inputLines.add(sc.nextLine());
@@ -46,18 +44,21 @@ public class ClusterCounter {
 
     if (inputLines.size() == 0) {
       System.out.println("DIAGRAM HAS 0 ROWS");
-      return;
+      return inputLines;
     }
 
     if (inputLines.get(0).length() == 0) {
       System.out.println("DIAGRAM HAS 0 COLS");
-      return;
     }
 
+    return inputLines;
+  }
+
+  public int[][] getFlatDiagram(List<String> inputLines) {
     int row = inputLines.size();
     int col = inputLines.get(0).length();
 
-    int[][] flatDiagram = new int[row + 2][col + 2];
+    int[][] flatDiagram = new int[row + 2][col + 2]; // pad with 0s around the orginal diagram
 
     for (int i = 0; i <= row + 1; i++) {
       for (int j = 0; j <= col + 1; j++) {
@@ -79,9 +80,25 @@ public class ClusterCounter {
       }
     }
 
+    return flatDiagram;
+  }
+
+  public static void main(String[] args) {
     ClusterCounter counter = new ClusterCounter();
 
-    int clusterCount = counter.countCluster(flatDiagram, row + 2, col + 2);
+    List<String> inputLines = counter.readInputLines();
+
+    int row = inputLines.size();
+    int col = inputLines.size() == 0 ? 0 : inputLines.get(0).length();
+
+    if (row == 0 || col == 0) {
+      System.out.println(0);
+      return;
+    }
+
+    int[][] flatDiagram = counter.getFlatDiagram(inputLines);
+
+    int clusterCount = counter.countCluster(flatDiagram, row + 2, col + 2); // row and col increased by 2 due to 0 padding
 
     System.out.println(clusterCount);
   }
