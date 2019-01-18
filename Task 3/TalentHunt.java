@@ -46,8 +46,34 @@ public class TalentHunt {
     return inputLines;
   }
 
-  public void generateMatrix() {
+  public void generateMatrix(List<String> inputLines) {
+    int[][] jobMatrix = new int[inputLines.size() / 2][inputLines.size() / 2];
+    int[][] candidateMatrix = new int[inputLines.size() / 2][inputLines.size() / 2];
 
+    int lineCount = 0;
+
+    for (String line: inputLines) {
+      line = line.replaceAll("[jc:]","");
+      String[] lineWords = line.split(" ");
+
+      System.out.println(line);
+
+      if (lineCount < inputLines.size() / 2) {
+        int jobIndex = Integer.valueOf(lineWords[0]);
+        for (int i = 1; i < lineWords.length; i++) {
+          int candidateIndex = Integer.valueOf(lineWords[i]);
+          jobMatrix[jobIndex - 1][i - 1] = candidateIndex - 1; 
+        }
+      } else {
+        int candidateIndex = Integer.valueOf(lineWords[0]);
+        for (int i = 1; i < lineWords.length; i++) {
+          int jobIndex = Integer.valueOf(lineWords[i]);
+          candidateMatrix[candidateIndex - 1][i - 1] = jobIndex - 1;
+        }
+      }
+
+      lineCount++;
+    }   
   }
 
   public static void main(String[] args) {
