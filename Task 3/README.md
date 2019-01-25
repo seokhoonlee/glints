@@ -33,7 +33,7 @@ If they have chosen the same job, I will look at these two candidates from job's
 
 For the candidate that has not been chosen by the job, I will set his job preference to this next favored job. If that next favoured job has not been added to the set, I will add to the set. [line 98-108]
 
-This allows us to greedily maximize the relevancy of the pairing that assures there will be no job or candidate match which would BOTH be mor relevant to each other for any other pair.
+This allows us to greedily maximize the relevancy of the pairing that assures there will be no job or candidate match which would BOTH be more relevant to each other for any other pair.
 
 ## Explanation of differences in the answer
 
@@ -46,7 +46,7 @@ Summarized from the question description:
 ### Sample Input File 1
 
 Input:
-
+```
 j1: c3 c4 c2 c1
 j2: c2 c3 c1 c4
 j3: c4 c2 c3 c1
@@ -56,27 +56,27 @@ c1: j4 j1 j2 j3
 c2: j1 j2 j4 j3
 c3: j1 j3 j4 j2
 c4: j1 j3 j4 j2
-
+```
 Expected:
-
+```
 c1 j4
 c2 j2
 c3 j1
 c4 j3
-
+```
 Actual:
-
+```
 c1 j4
 c2 j2
 c3 j1
 c4 j3
-
+```
 My program produces the same answer.
 
 ### Sample Input File 2
 
 Input:
-
+```
 j1: c2 c3 c4 c1 c5
 j2: c4 c3 c1 c5 c2
 j3: c4 c3 c5 c1 c2
@@ -89,23 +89,23 @@ c2: j3 j5 j4 j2 j1
 c3: j1 j4 j5 j2 j3
 c4: j5 j1 j4 j3 j2
 c5: j4 j3 j1 j5 j2
-
+```
 Expected:
-
+```
 c1 j2
 c2 j4
 c3 j1
 c4 j5
 c5 j3
-
+```
 Actual:
-
+```
 c1 j2
 c2 j3
 c3 j1
 c4 j5
 c5 j4
-
+```
 I will only explain for the candiate-job pairs which are different in expected and actual. Also, I will explain from the actual (my program's) perspective.
 
 1. Actual: c2-j3 Expected: c2-j4
@@ -119,7 +119,7 @@ c5-j4 is stable because j4 is ranked higher than h3 from c5's perspective. There
 ### Sample Input File 3
 
 Input:
-
+```
 j1: c8 c4 c2 c3 c7 c6 c1 c5
 j2: c3 c5 c7 c8 c1 c6 c2 c4
 j3: c5 c1 c4 c2 c6 c7 c8 c3
@@ -138,9 +138,9 @@ c5: j3 j5 j8 j7 j6 j1 j2 j4
 c6: j8 j5 j6 j4 j2 j7 j3 j1
 c7: j5 j8 j1 j3 j6 j4 j7 j2
 c8: j5 j3 j7 j8 j1 j6 j4 j2
-
+```
 Expected:
-
+```
 c1 j4
 c2 j8
 c3 j2
@@ -149,9 +149,9 @@ c5 j3
 c6 j6
 c7 j5
 c8 j7
-
+```
 Actual:
-
+```
 c1 j4
 c2 j2
 c3 j6
@@ -160,7 +160,7 @@ c5 j3
 c6 j8
 c7 j5
 c8 j7
-
+```
 1. Actual: c2-j2 Expected: c2-j8
 
 c2-j2 is stable becuase j2 is ranked higher than j8 from c2's perspective. Therefore, c2-j8 cannot be BOTH more relevant to each other.
