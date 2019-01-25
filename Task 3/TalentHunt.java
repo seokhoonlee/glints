@@ -4,24 +4,19 @@ public class TalentHunt {
   private int[][] jobMatrix;
   private int[][] candidateMatrix;
 
-  public class Pair { // implements Comparable<Pair> {
+  public class Pair {
     private Integer candidateIndex;
     private Integer jobIndex;
 
     public Pair(Integer candidateIndex, Integer jobIndex) {
-      this.candidateIndex = candidateIndex; // account for difference between zero index and one idnex
-      this.jobIndex = jobIndex; // account for difference between zero index and one idnex
+      this.candidateIndex = candidateIndex;
+      this.jobIndex = jobIndex;
     }
 
     @Override
     public String toString() {
       return "c" + (candidateIndex + 1) + " j" + (jobIndex + 1);
     }
-
-    // @Override
-    // public int compareTo(Pair pair) {
-    //   return this.candidateIndex.compareTo(pair.candidateIndex);
-    // }
   }
 
   public void printPairs(List<Pair> pairs) {
@@ -72,20 +67,6 @@ public class TalentHunt {
 
       lineCount++;
     }
-
-    // for (int i = 0; i < inputLines.size() / 2; i++) {
-    //   for (int j = 0; j < inputLines.size() / 2; j++) {
-    //     System.out.print(jobMatrix[i][j] + " ");
-    //   }
-    //   System.out.println();
-    // }
-
-    // for (int i = 0; i < inputLines.size() / 2; i++) {
-    //   for (int j = 0; j < inputLines.size() / 2; j++) {
-    //     System.out.print(candidateMatrix[i][j] + " ");
-    //   }
-    //   System.out.println();
-    // }
   }
 
   public List<Pair> matchJobAndCadidate() {
@@ -164,18 +145,10 @@ public class TalentHunt {
 
     List<String> inputLines = talentHunt.readInputLines();
 
-    // for (String inputLine: inputLines) {
-    //   System.out.println(inputLine);
-    // }
-
-    // System.out.println(inputLines.size());
-
     talentHunt.generateMatrix(inputLines);
 
     List<Pair> pairs = talentHunt.matchJobAndCadidate();
-
-    // Collections.sort(pairs);
-
+    
     talentHunt.printPairs(pairs);
   }  
 }
